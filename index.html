@@ -1,37 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emotion Explorer</title>
+  <meta name="description" content="An interactive reflection based on Plutchik's Wheel of Emotions to help identify and explore emotional states." />
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Modern Sans-Serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <title>Emotion Explorer</title>
+  <link rel="stylesheet" href="./style.css" />
 
-    <link rel="stylesheet" href="style.css">
+  <!-- jsPDF Client-Side PDF Generation Library (GitHub Pages & Browser Compatible) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-
 <body>
+  <!-- Persistent Non-Clinical Disclaimer Banner at the absolute top of the page -->
+  <aside id="globalDisclaimerBanner" class="global-disclaimer-banner" role="note" aria-label="Non-clinical disclaimer">
+    <div class="global-disclaimer-content">
+      <span class="disclaimer-text-content">For non-clinical self-exploration only. This tool does not provide clinical, medical, diagnostic, or professional mental health advice.</span>
+    </div>
+  </aside>
 
-    <main>
-        <h1>Emotion Explorer</h1>
+  <!-- Ambient background decorative frosted glass blobs and subtle translucent rings -->
+  <div class="blob blob-1" aria-hidden="true"></div>
+  <div class="blob blob-2" aria-hidden="true"></div>
+  <div class="blob blob-3" aria-hidden="true"></div>
+  <div class="ambient-ring ring-top-right" aria-hidden="true"></div>
+  <div class="ambient-ring ring-bottom-left" aria-hidden="true"></div>
 
-        <div id="question-container">
-            <h2 id="question-text"></h2>
+  <!-- Main App Viewport Container -->
+  <div class="app-container">
+    
+    <!-- Editorial Brand Header -->
+    <header class="app-header">
+      <h1 class="brand-title" id="brandTitle">Emotion Explorer</h1>
+    </header>
 
-            <div id="answer-container"></div>
+    <!-- Main Dynamic Content Wrapper -->
+    <main class="content-wrapper" id="contentWrapper">
 
-            <button id="next-button">
-                Next
+      <!-- ================================================================= -->
+      <!-- VIEW 1: START / LANDING VIEW                                      -->
+      <!-- ================================================================= -->
+      <section id="startView" class="view-section start-view active" aria-labelledby="startLeadText">
+        <div class="start-card">
+          <div class="start-intro-text">
+            <h2 id="startLeadText" class="lead-text">
+              Sometimes emotions can feel mixed, unclear, or difficult to name.
+            </h2>
+            <p class="sub-lead-text">
+              This short reflection will guide you through a few gentle questions based on Plutchik's Wheel of Emotions to help explore what may be present right now.
+            </p>
+          </div>
+
+          <div class="action-row">
+            <button id="startBtn" class="pill-btn primary-btn" type="button" aria-label="Start exploring your emotions">
+              <span>Start Exploring</span>
+              <span class="btn-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             </button>
+          </div>
+
+          <!-- Expandable Plutchik's Wheel Information Section -->
+          <div class="expandable-section-wrapper" id="plutchikExpandableWrapper">
+            <button id="plutchikToggleBtn" class="expandable-toggle-btn" type="button" aria-expanded="false" aria-controls="plutchikExpandedContent">
+              <span class="toggle-label">What is Plutchik’s Wheel of Emotions?</span>
+              <span class="toggle-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19" class="toggle-vertical-line"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </span>
+            </button>
+
+            <div id="plutchikExpandedContent" class="expandable-content" role="region" aria-labelledby="plutchikToggleBtn">
+              <div class="expandable-inner-content">
+                <h3 class="about-plutchik-title">Plutchik’s Wheel of Emotions</h3>
+                
+                <p class="about-plutchik-p">
+                  Robert Plutchik developed a model that organizes emotions around eight basic emotion families:
+                </p>
+
+                <p class="plutchik-families-list">
+                  <strong>Joy, Trust, Fear, Surprise, Sadness, Disgust, Anger, and Anticipation.</strong>
+                </p>
+
+                <p class="about-plutchik-p">
+                  The model also represents differences in emotional intensity. For example, the Fear family ranges from <strong>Apprehension → Fear → Terror</strong>, while the Joy family ranges from <strong>Serenity → Joy → Ecstasy</strong>.
+                </p>
+
+                <p class="about-plutchik-p">
+                  The wheel also places related and contrasting emotions in relation to one another. Emotion Explorer uses this framework as a structure for reflection and emotion labeling.
+                </p>
+
+                <div class="about-plutchik-disclaimer">
+                  Emotion Explorer is an exploratory self-reflection tool inspired by this framework. It is not a standardized psychological assessment and does not provide a medical or psychological diagnosis.
+                </div>
+
+                <!-- Academic References -->
+                <div class="academic-reference-container">
+                  <h4 class="reference-section-title">Reference</h4>
+                  
+                  <div class="reference-entry">
+                    <p class="reference-citation">
+                      Robert Plutchik. <em>The Nature of Emotions</em>. American Scientist, 89(4), 344–350, 2001.
+                    </p>
+                    <a href="https://www.americanscientist.org/article/the-nature-of-emotions" target="_blank" rel="noopener noreferrer" class="reference-link">
+                      <span>Read the original article</span>
+                      <span class="ref-arrow" aria-hidden="true">→</span>
+                    </a>
+                  </div>
+
+                  <div class="reference-entry secondary-entry">
+                    <p class="reference-citation">
+                      Semeraro et al. (2021), <em>PyPlutchik: Visualising and comparing emotion-annotated corpora</em>, published open access through PubMed Central.
+                    </p>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8409663/" target="_blank" rel="noopener noreferrer" class="reference-link secondary-link">
+                      <span>See an open-access overview of the wheel structure</span>
+                      <span class="ref-arrow" aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="disclaimer-text">
+            This tool is designed for emotional reflection and self-awareness and does not provide a medical or psychological diagnosis.
+          </p>
         </div>
+
+        <!-- Start View Footer & Community Area -->
+        <div class="community-feedback-section start-community-section">
+          <p class="community-heading">Have thoughts about Emotion Explorer?</p>
+          <div class="community-actions-row">
+            <button id="leaveCommentBtnStart" class="community-btn comment-btn" type="button" aria-label="Leave feedback or comment">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Leave a Comment</span>
+            </button>
+            <a href="https://github.com/feifeigoose0520-jpg/emotion-explorer" target="_blank" rel="noopener noreferrer" class="community-btn github-btn" aria-label="Explore Emotion Explorer on GitHub (opens in new tab)">
+              <svg class="github-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+              </svg>
+              <span>Learn About the Development ↗</span>
+            </a>
+          </div>
+          <p class="community-copy">
+            Curious how Emotion Explorer was built? Explore the project on GitHub and star the repository if you'd like to support its development.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 2: QUESTIONNAIRE VIEW                                        -->
+      <!-- ================================================================= -->
+      <section id="questionView" class="view-section question-view" aria-live="polite">
+        
+        <!-- Top Back Navigation -->
+        <div class="back-nav-container" id="backNavContainer">
+          <button id="backBtn" class="back-btn" type="button" aria-label="Go back to previous question">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+          </button>
+        </div>
+
+        <!-- Progress Indicator Sequence -->
+        <div class="progress-section" id="progressSection">
+          <div class="progress-track" id="progressDotsTrack" role="progressbar" aria-label="Assessment Progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="7">
+            <!-- Dynamically populated dot connectors -->
+          </div>
+          <div class="progress-label" id="progressLabel">
+            Question 1 of 7
+          </div>
+        </div>
+
+        <!-- Question Prompt & Options Container -->
+        <div class="question-container" id="questionContainer">
+          <div class="question-header">
+            <h2 class="question-text" id="questionText">
+              <!-- Dynamically populated question text -->
+            </h2>
+            <p class="instruction-text" id="instructionText">
+              <!-- Dynamically populated instruction e.g. "Choose up to 2 options" -->
+            </p>
+          </div>
+
+          <!-- Answer Option Cards -->
+          <div class="answers-list" id="answersList" role="group" aria-labelledby="questionText">
+            <!-- Dynamically rendered answer cards -->
+          </div>
+
+          <!-- Next Button Action Row -->
+          <div class="action-row next-action-row">
+            <button id="nextBtn" class="pill-btn primary-btn" type="button" disabled aria-label="Proceed to next question">
+              <span id="nextBtnText">Next</span>
+              <span class="btn-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 3: RESULT VIEW                                               -->
+      <!-- ================================================================= -->
+      <section id="resultView" class="view-section result-view" aria-labelledby="resultTitle">
+        <div class="result-container" id="resultContainer">
+          
+          <!-- Standard Result Header (hidden in zero-score case) -->
+          <div class="result-header" id="resultHeader">
+            <h2 class="result-title" id="resultTitle">Your Emotional Landscape</h2>
+            <p class="result-intro-text" id="resultIntroText">
+              Based on your reflection, your responses point toward:
+            </p>
+          </div>
+
+          <!-- Dynamic List of Identified Emotion Result Cards -->
+          <div class="emotion-results-list" id="emotionResultsList">
+            <!-- Dynamically populated emotion cards with 3-tier Plutchik intensity visualizer -->
+          </div>
+
+          <!-- Special Zero-Score State Container (hidden by default) -->
+          <div class="zero-result-card" id="zeroResultCard" style="display: none;">
+            <div class="zero-icon-wrapper" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 12h8"></path>
+              </svg>
+            </div>
+            <h2 class="zero-result-title" id="zeroResultTitle">
+              Your responses didn’t point strongly toward a specific emotion yet.
+            </h2>
+            <p class="zero-result-text" id="zeroResultText">
+              That can happen when things feel unclear, mixed, distant, or difficult to name. You can try the reflection again whenever you’d like.
+            </p>
+          </div>
+
+          <!-- Plutchik Wheel Interactive Exploration Card (hidden in zero-score case) -->
+          <div class="wheel-placeholder-card" id="wheelSection">
+            <div class="wheel-card-header">
+              <span class="wheel-icon" aria-hidden="true">✦</span>
+              <h3 class="wheel-placeholder-title">Explore your emotion on the wheel</h3>
+            </div>
+            <p class="wheel-placeholder-desc">
+              Robert Plutchik’s model organizes emotions by similarity, polarity, and intensity. The primary emotions you explored connect across shades of experience.
+            </p>
+            
+            <!-- Radial SVG Plutchik Wheel Representation -->
+            <div class="wheel-visual-diagram" id="wheelVisualDiagram">
+              <svg class="wheel-svg" id="plutchikWheelSvg" viewBox="0 0 300 300" aria-label="Plutchik Wheel of Emotions diagram">
+                <!-- Dynamically rendered wheel petals and center -->
+              </svg>
+            </div>
+            <div class="wheel-caption-text" id="wheelCaptionText">
+              Highlighted petals reflect your identified emotional spectrum
+            </div>
+          </div>
+
+          <!-- Result View Actions: Hierarchy (Explore Again -> Download Summary -> Feedback) -->
+          <div class="action-row result-action-row" id="resultActionRow">
+            <button id="restartBtn" class="pill-btn primary-btn result-explore-again-btn" type="button" aria-label="Start the reflection over again">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+              <span>Explore Again</span>
+            </button>
+            <button id="downloadSummaryBtn" class="pill-btn secondary-btn result-download-btn" type="button" aria-label="Download a personal PDF summary of your emotion results">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download Emotion Summary as PDF ↓</span>
+            </button>
+          </div>
+
+          <p class="disclaimer-text result-disclaimer">
+            This reflection is an exploratory companion for self-awareness and does not constitute psychological advice or diagnostic evaluation.
+          </p>
+
+          <!-- Result View Community & Feedback Block -->
+          <div class="community-feedback-section result-community-section">
+            <p class="community-heading">Have thoughts about this experience?</p>
+            <div class="community-actions-row">
+              <button id="leaveCommentBtnResult" class="community-btn comment-btn" type="button" aria-label="Leave a comment or feedback">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Leave a Comment</span>
+              </button>
+              <a href="https://github.com/feifeigoose0520-jpg/emotion-explorer" target="_blank" rel="noopener noreferrer" class="community-btn github-btn" aria-label="Explore Emotion Explorer on GitHub (opens in new tab)">
+                <svg class="github-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+                </svg>
+                <span>Learn About the Development ↗</span>
+              </a>
+            </div>
+            <p class="community-copy">
+              Curious how Emotion Explorer was built? Explore the project on GitHub and star the repository if you'd like to support its development.
+            </p>
+          </div>
+        </div>
+      </section>
+
     </main>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- Leave a Comment / Feedback Modal Dialog -->
+  <div id="commentModal" class="comment-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="commentModalTitle">
+    <div class="comment-modal-card">
+      <button id="closeCommentModalBtn" class="comment-modal-close-btn" type="button" aria-label="Close comment dialog">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
 
+      <div class="comment-modal-header">
+        <h3 id="commentModalTitle" class="comment-modal-title">Share Your Thoughts</h3>
+        <p class="comment-modal-subtitle">Your reflections help improve the Emotion Explorer experience.</p>
+      </div>
+
+      <form id="commentForm" class="comment-form" action="https://formspree.io/f/mnpagppj" method="POST"
+>
+        <label for="commentTextInput" class="comment-input-label">Comment or Note</label>
+        <textarea id="commentTextInput" name="message" class="comment-textarea" placeholder="What was your experience like exploring your emotional state?" rows="4" required></textarea>
+
+        <div class="comment-form-actions">
+          <button id="cancelCommentBtn" type="button" class="pill-btn secondary-btn comment-cancel-btn">Cancel</button>
+          <button id="submitCommentBtn" type="submit" class="pill-btn primary-btn comment-submit-btn">Send Comment</button>
+        </div>
+      </form>
+
+      <div id="commentSuccessMsg" class="comment-success-message" style="display: none;">
+        <span class="success-icon" aria-hidden="true">✓</span>
+        <p>Thank you for sharing your thoughts and reflections.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pure Vanilla JavaScript Module -->
+  <script src="./script.js"></script>
 </body>
-
 </html>
