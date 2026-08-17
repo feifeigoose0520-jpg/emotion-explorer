@@ -1,0 +1,14 @@
+#answer-container button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    text-align: left;
+    cursor: pointer;
+}
+
+#answer-container button.selected {
+    border: 2px solid #333;
+    background-color: #e6e6e6;
+}
+
